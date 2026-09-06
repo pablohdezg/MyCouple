@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg_light"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <!-- Los dos, juntitos a la izquierda -->
+    <TextView
+        android:id="@+id/widget_avatar_me"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/widget_avatar_bg"
+        android:gravity="center"
+        android:text="💗"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/widget_avatar_other"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="-8dp"
+        android:background="@drawable/widget_avatar_bg"
+        android:gravity="center"
+        android:text="💙"
+        android:textSize="13sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/widget_distance_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Activad el mapa"
+            android:textColor="#40222C"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/widget_distance_updated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#927B84"
+            android:textSize="10sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+    </LinearLayout>
+</LinearLayout>

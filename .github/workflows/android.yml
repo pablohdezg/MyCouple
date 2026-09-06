@@ -1,0 +1,88 @@
+name: Construir APK
+
+# Genera el APK de "Nuestro rincón" en la nube: no hace falta instalar nada.
+# 1. Sube este proyecto a un repositorio de GitHub.
+# 2. Pestaña "Actions" → "Construir APK" → "Run workflow".
+# 3. Al terminar, descarga el ZIP de la sección "Artifacts" y dentro está el .apk.
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: SDK de Android
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar la web
+        run: npm run build
+
+      - name: Iconos y splash
+        run: npm run assets
+
+      - name: Sincronizar con Android
+        run: npx cap sync android
+
+      - name: Construir APK de depuración
+        run: |
+          chmod +x android/gradlew
+          cd android && ./gradlew assembleDebug --no-daemon
+
+      - name: Firmar un APK de release (clave autofirmada)
+        run: |
+          cd android
+          keytool -genkeypair -v -keystore release.jks -storetype JKS \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias nuestrorincon -storepass nuestrorincon -keypass nuestrorincon \
+            -dname "CN=Nuestro Rincon, OU=Personal, O=Personal, L=-, S=-, C=ES"
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=$PWD/release.jks \
+            -Pandroid.injected.signing.store.password=nuestrorincon \
+            -Pandroid.injected.signing.key.alias=nuestrorincon \
+            -Pandroid.injected.signing.key.password=nuestrorincon
+        continue-on-error: true
+
+      - name: Renombrar los APK
+        run: |
+          mkdir -p salida
+          cp android/app/build/outputs/apk/debug/app-debug.apk salida/nuestro-rincon-debug.apk
+          if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk salida/nuestro-rincon.apk
+          fi
+          ls -la salida
+
+      - name: Subir el APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuestro-rincon-apk
+          path: salida/*.apk
+          retention-days: 90
+
+      - name: Publicar como Release (solo si se crea una etiqueta)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: salida/*.apk

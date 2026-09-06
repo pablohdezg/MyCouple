@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff9bb3"/>
+      <stop offset="52%" stop-color="#e8567c"/>
+      <stop offset="100%" stop-color="#b93d73"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.12" r="0.7">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#7a1f45" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" rx="232" fill="url(#bg)"/>
+  <rect width="1024" height="1024" rx="232" fill="url(#glow)"/>
+
+  <g filter="url(#soft)">
+    <!-- corazón grande -->
+    <path transform="translate(300 300) scale(4.6)"
+      d="M50 88 C50 88 8 60 8 34 C8 18 20 8 33 8 C41 8 47 12 50 18 C53 12 59 8 67 8 C80 8 92 18 92 34 C92 60 50 88 50 88 Z"
+      fill="#ffffff" fill-opacity="0.95"/>
+    <!-- corazón pequeño entrelazado -->
+    <path transform="translate(196 262) scale(2.9)"
+      d="M50 88 C50 88 8 60 8 34 C8 18 20 8 33 8 C41 8 47 12 50 18 C53 12 59 8 67 8 C80 8 92 18 92 34 C92 60 50 88 50 88 Z"
+      fill="none" stroke="#ffffff" stroke-width="9" stroke-opacity="0.9"/>
+  </g>
+
+  <!-- destellos -->
+  <g fill="#ffffff" fill-opacity="0.85">
+    <path d="M786 232 l14 38 38 14 -38 14 -14 38 -14 -38 -38 -14 38 -14 z"/>
+    <path d="M232 742 l10 27 27 10 -27 10 -10 27 -10 -27 -27 -10 27 -10 z" fill-opacity="0.65"/>
+  </g>
+</svg>
